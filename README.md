@@ -55,8 +55,14 @@ npm run dev
 
 ### Deploy
 
-Vercel, framework preset Vite. Set the two `VITE_` variables above in
-project settings, then redeploy so the build picks them up.
+Vercel → Add New → Project → import this repo. The Vite preset is detected
+automatically; no build settings to change. Add the two `VITE_` variables
+above under Settings → Environment Variables, then redeploy so the build
+picks them up. Importing the repo (rather than uploading a build) means
+every push to the branch redeploys itself.
+
+Until those variables are set the app still works — it just runs local-only,
+with no sign-in and no mirror.
 
 ## Adding it to the iPhone home screen
 

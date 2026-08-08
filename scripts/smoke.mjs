@@ -2,14 +2,31 @@
    page (the force-close-Safari case), and confirm the data is still there.
    jsdom can't tell us this — it has no layout, no storage persistence
    across page loads, and no service worker. */
-import { chromium, devices } from "playwright";
+import { existsSync } from "node:fs";
+import { chromium, devices } from "playwright-core";
 
 const BASE = process.env.SMOKE_URL || "http://localhost:4173";
 const errors = [];
 
-const browser = await chromium.launch({
-  executablePath: process.env.CHROMIUM_PATH || undefined,
-});
+/* playwright-core rather than playwright: it ships no browsers, which keeps
+   `npm install` on the deploy host from pulling ~150MB it will never use.
+   Point CHROMIUM_PATH at a Chrome/Chromium binary, or let these defaults
+   find one. */
+const CANDIDATES = [
+  process.env.CHROMIUM_PATH,
+  "/opt/pw-browsers/chromium-1194/chrome-linux/chrome",
+  "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome",
+  "/usr/bin/chromium",
+  "/usr/bin/google-chrome",
+].filter(Boolean);
+
+const executablePath = CANDIDATES.find((p) => existsSync(p));
+if (!executablePath) {
+  console.error("No Chromium found. Set CHROMIUM_PATH to a Chrome binary.");
+  process.exit(1);
+}
+
+const browser = await chromium.launch({ executablePath });
 const context = await browser.newContext({ ...devices["iPhone 13"] });
 const page = await context.newPage();
 
