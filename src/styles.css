@@ -1,0 +1,52 @@
+:root {
+  color-scheme: dark;
+  --ink: #0d1117;
+  --gold: #e0a83c;
+}
+
+* {
+  box-sizing: border-box;
+  -webkit-tap-highlight-color: transparent;
+}
+
+html {
+  /* Stop iOS bumping up font sizes when the phone is rotated. */
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  background: var(--ink);
+  color: #eae6db;
+  font-family: "Inter", system-ui, -apple-system, sans-serif;
+  /* No rubber-band bounce past the fixed bottom nav. */
+  overscroll-behavior-y: none;
+}
+
+input:focus,
+select:focus,
+textarea:focus,
+button:focus-visible {
+  outline: 2px solid var(--gold);
+  outline-offset: 1px;
+}
+
+input::placeholder,
+textarea::placeholder {
+  color: #566072;
+}
+
+select {
+  appearance: none;
+}
+
+/* Number inputs are for logging kg/reps/RPE — the spinners just steal
+   thumb space on a phone. */
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+input[type="number"] {
+  -moz-appearance: textfield;
+}
