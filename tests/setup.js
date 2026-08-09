@@ -20,6 +20,10 @@ if (!window.matchMedia) {
 
 beforeEach(() => {
   localStorage.clear();
+  // Supabase config is committed, so the app would show the sign-in gate.
+  // These tests are about the local persistence path — the one that must
+  // never lose data. The gate itself is covered separately.
+  localStorage.setItem("fight-camp-local-only", "1");
 });
 
 afterEach(() => {

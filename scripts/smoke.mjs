@@ -50,6 +50,15 @@ const visible = (locator) =>
 await page.goto(BASE, { waitUntil: "networkidle" });
 
 check("app renders", await visible(page.getByRole("heading")));
+
+/* Supabase is configured, so we land on the sign-in gate. Signing in needs a
+   code from an inbox; take the local-only path, which is the one that has to
+   survive a force-close anyway. */
+const skip = page.getByRole("button", { name: /^Skip/ });
+if (await visible(skip)) {
+  check("sign-in gate offers a local-only path", true);
+  await skip.click();
+}
 check("week strip present", (await page.getByText("Mon", { exact: true }).count()) > 0);
 
 // Log a Session A workout

@@ -23,6 +23,19 @@ async function boot() {
   return r;
 }
 
+describe("sign-in gate", () => {
+  it("asks for an email, and lets you skip straight into local-only mode", async () => {
+    localStorage.removeItem("fight-camp-local-only");
+    await boot();
+    expect(document.body.textContent).toContain("Sign in to keep your training backed up");
+    expect(document.querySelector('input[type="email"]')).toBeTruthy();
+
+    await click(containing("Skip"));
+    expect(containing("Log session")).toBeTruthy();
+    expect(localStorage.getItem("fight-camp-local-only")).toBe("1");
+  });
+});
+
 describe("first boot", () => {
   it("renders the header and the whole week strip", async () => {
     await boot();
